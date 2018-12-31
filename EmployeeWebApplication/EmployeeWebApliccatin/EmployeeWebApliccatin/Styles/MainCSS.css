@@ -1,0 +1,105 @@
+﻿
+p{margin:0;}
+body{padding-bottom:0; margin-bottom:0;}
+
+.myFooter {
+    background-color: #222;
+    color: #9d9d9d;
+    padding:200px 40px 40px 40px;
+    direction:ltr;
+    text-align:left;
+}
+
+    .myFooter h2{
+text-align:left;
+
+    }
+
+
+.myFooter p{
+    display:block;
+    text-align:left;
+
+}
+.ItemInfoHolder {
+}
+    .TeamInfoHolder .post-item {
+        margin-bottom: 20px;
+        position: relative;
+        text-align: center;
+        border: 1px solid #ddd;
+        box-shadow: inset 0 0 10px #ddd;
+        padding:10px;
+    }
+
+
+.ItemInfoHolder .team-name-position {
+    background: url(/images/port-grid-gradient.png) repeat-x center bottom;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    padding: 15px;
+    color: #fff;
+    width: 100%;
+height:80px;
+}
+
+.post-content {
+    height: 100%;
+    background-color: #000;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+
+}
+
+ .post-content:hover {
+        opacity: 0.7;
+    }
+.post-Descripton {
+    position: absolute;
+    top: 20%;
+    left: 0;
+    padding: 10px;
+    color: #fff;
+    width: 100%;
+    text-align: justify;
+    padding: 0 6px;
+}
+
+.ColorBold{display:block; font-weight:bold;color:red;}
+
+.team-name-position .team-name {
+    font-size: 16px;
+    font-weight: bold;
+    position: absolute;
+    bottom: 0;
+}
+
+
+.imgCenter{margin-left:auto; margin-right:auto;}
+
+.team-name-position .team-position {
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 0 !important;
+    position: absolute;
+    bottom: 25px;
+}
+
+.carousel-caption h3 {
+    color: #000 !important;
+}
+
+.carousel-caption p {
+    color: #000 !important;
+}
+
+.carousel-caption {
+    background-color: #ddd;
+    opacity: 0.7;
+    border-radius: 10px;
+}
+
