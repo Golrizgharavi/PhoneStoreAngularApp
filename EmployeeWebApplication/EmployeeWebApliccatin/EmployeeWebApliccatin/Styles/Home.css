@@ -99,6 +99,7 @@
     background-color: #aaa !important;
 }
 
+
 /*----------Header Slider-----------*/
 
 .SquersHolder {
@@ -248,7 +249,13 @@
         background-color: #24a000 !important;
         color: #fff !important;
     }
-    .CarouselItemDescription {
+
+
+    .CarouselItemLink:visited {
+        text-decoration: none !important;
+        color: #24a000;
+    }
+        .CarouselItemDescription {
         display: block;
         color: #808080;
         text-align: left;
@@ -264,6 +271,7 @@
   
 }
 
+.CarouselMTittle {display:block;padding-bottom:0;color:#000;font-size:20px; font-weight:bold; text-align:center;}
 #myCarousel {
     background-color: #fff;
     margin-bottom: -170px;

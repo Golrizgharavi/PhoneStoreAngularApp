@@ -6,7 +6,8 @@ app.controller('phoneController', function (productService) {
     var vm = this;
     vm.message = "Welcome to Phone Page";
     var $TemplateHolder = document.getElementById("PhoneListContainerDiv");
- 
+    var $ObjTemplateHolder = $('#PhoneListContainerDiv');
+
     var promiseGet = productService.GetPhoneListByType(1);
 
     vm.SetTemplate = function (myObjs) {
@@ -24,7 +25,7 @@ app.controller('phoneController', function (productService) {
                     '</p>' +
                     '</div>' +
                     '</div>' +
-                    '<a href="#/phone/' + myObjs[i].Id + '" class="post-content">' +
+                    '<a href="#/phone/' + myObjs[i].Id + '" class="post-content" target="_blank">' +
                     '<p class="post-Descripton">' + myObjs[i].Summery
 
                 $myTemplate += (myObjs[i].Sale == 'True') ? '<span class="ColorBold">On Sale </span>' : '';
@@ -50,7 +51,7 @@ app.controller('phoneController', function (productService) {
                     '</p>' +
                     '</div>' +
                     '</div>' +
-                    '<a href="#/phone/' + myObjs[i].Id + '" class="post-content">' +
+                    '<a href="#/phone/' + myObjs[i].Id + '" class="post-content" target="_blank">' +
                     '<p class="post-Descripton">' + myObjs[i].Summery;
 
                 $myTemplate += (myObjs[i].Sale == 'True') ? '<span class="ColorBold">On Sale </span>' : '';
@@ -65,15 +66,17 @@ app.controller('phoneController', function (productService) {
         }
 
 
-        $TemplateHolder.innerHTML = $myTemplate;
-
-
+        //$TemplateHolder.innerHTML = $myTemplate;
+       
+        $ObjTemplateHolder.animate({ 'opacity': 0 }, 400, function () {
+            $(this).html($myTemplate).animate({ 'opacity': 1 }, 400);
+        });
     };
 
 
     promiseGet.then(function (p1) {
         vm.phones = p1.data;  
-        //alert(JSON.stringify(vm.phones.OSs));
+        //alert(JSON.stringify(vm.phones.Brds));
         vm.SetTemplate(vm.phones.DataArr);
 
     },
@@ -88,7 +91,7 @@ app.controller('phoneController', function (productService) {
             alert("Minimum price should be less than maximum price! :)");
 
         } else {
-           alert(JSON.stringify(vm.OS));
+          // alert(JSON.stringify(vm.OS));
             var GetSearchResult = productService.GetPhonesByFilter(vm.Name, 1, vm.OS, vm.Brd, vm.minPrice, vm.maxPrice);
             GetSearchResult.then(function (p1) {
 

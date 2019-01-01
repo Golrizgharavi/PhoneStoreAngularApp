@@ -105,10 +105,17 @@ namespace EmployeeWebApliccatin
             get { return description; }
             set { description = value; }
         }
+
+        private int? mycount ;
+        public int? MyCount
+        {
+            get { return mycount; }
+            set { mycount = value; }
+        }
         #endregion
 
 
-        public static List<Phone> GetPhonesListByType(ProductType myPrType)
+        public static List<Phone> GetPhonesListByType(ProductType? myPrType)
         {
             
             List<Phone> phoneList = new List<Phone>();
@@ -177,7 +184,49 @@ namespace EmployeeWebApliccatin
             return phoneList;
         }
 
+        public static List<Phone> GetDevicesCount()
+        {
 
+            List<Phone> DeviceList = new List<Phone>();
+
+            SqlConnection con = new SqlConnection(connStr);
+            SqlCommand cmd = new SqlCommand("GetDevicesCount", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+
+            SqlDataReader dr;
+
+
+            try
+            {
+               
+
+                con.Open();
+                dr = cmd.ExecuteReader();
+
+
+                while (dr.Read())
+                {
+                    Phone Device = new Phone();
+
+                    Device.PrType = (ProductType)Convert.ToByte(dr["PrType"]);
+                  
+                    if (dr["Mycount"] == DBNull.Value)
+                        Device.MyCount = null;
+                    else
+                        Device.MyCount =Convert.ToInt32(dr["Mycount"]);
+
+                    DeviceList.Add(Device);
+                }
+
+                dr.Close();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return DeviceList;
+        }
 
         public static Phone GetPhoneByID(int id)
         {

@@ -5,12 +5,30 @@
 app.service('productService', function ($http) {
 
     this.GetPhoneListByType = function (PrType) {
+        
+        return $http({
 
+            method: "Get",
+            url: "/GetData.aspx?q=2&TP=" + PrType, //get all products PrType==null
+            headers: { 'Content-Type': 'application/json' }
+        }).success(function (data) {
+
+            data = eval('(' + JSON.stringify(data) + ')');
+            //alert(data);
+            //alert('success' + JSON.stringify(data))
+        }).error(function (data) {
+
+            alert('failed' + JSON.stringify(data));
+
+        });
+    };
+
+    this.GetHomePage = function (PrType) {
 
         return $http({
 
             method: "Get",
-            url: "/GetData.aspx?q=2&TP=" + PrType, //get pro by type product = phone
+            url: "/GetData.aspx?q=6&TP=" + PrType, //get all products PrType==null
             headers: { 'Content-Type': 'application/json' }
         }).success(function (data) {
 

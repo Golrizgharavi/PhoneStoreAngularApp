@@ -39,11 +39,14 @@ namespace EmployeeWebApliccatin
             else if (Request.Params["q"] != null && Request.Params["q"] == "2")
             {
 
+                ProductType? PType = null;
                 //do stuff
-                ProductType PType = (ProductType)Convert.ToByte(Request.Params["TP"]);
+                if (Request.Params["TP"]!= "null")
+                PType = (ProductType)Convert.ToByte(Request.Params["TP"]);
+
                 List<Phone> phList = Phone.GetPhonesListByType(PType);
 
-                string myJson = "{\"OSs\":[{\"n\":\"Android\", \"val\": \"1\"}, {\"n\":\"IOS\", \"val\":\"2\"}], \"Brds\":[{\"n\":\"Sumsung\" , \"val\":\"1\"},{\"n\":\"Apple\" , \"val\":\"2\"},{\"n\":\"Microsoft\" , \"val\":\"3\"}, {\"n\":\"Sony\" , \"val\":\"4\"}] ,\"DataArr\":[";
+                string myJson = "{\"OSs\":[{\"n\":\""+ OsType.Android.ToString()+ "\", \"val\": \""+Convert.ToInt32 (OsType.Android) + "\"}, {\"n\":\""+ OsType.IOS.ToString() + "\", \"val\":\""+ Convert.ToInt32(OsType.IOS) + "\"}], \"Brds\":[{\"n\":\""+ Brands.Samsung.ToString() + "\" , \"val\":\""+ Convert.ToInt32(Brands.Samsung) + "\"},{\"n\":\""+ Brands.Apple.ToString() + "\" , \"val\":\""+ Convert.ToInt32(Brands.Apple) + "\"},{\"n\":\""+ Brands.Microsoft.ToString() + "\" , \"val\":\""+ Convert.ToInt32(Brands.Microsoft) + "\"}, {\"n\":\""+ Brands.Sony.ToString() + "\" , \"val\":\""+ Convert.ToInt32(Brands.Sony) + "\"}] ,\"DataArr\":[";
                 int i = 1;
                 foreach (Phone myPh in phList) {
                     myJson += "{\"Id\":" + myPh.Id.ToString() + ",\"Name\":" + "\"" + myPh.Name.ToString() + "\"" + ",\"Price\":" + "\"" + myPh.Price.ToString() + "\""+ ",\"DPrice\":" + "\"" + myPh.DiscountPrice.ToString() + "\"" + ",\"Brand\":";
@@ -76,10 +79,10 @@ namespace EmployeeWebApliccatin
                     switch (myPh.PrType)
                     {
                         case ProductType.Phone:
-                            myJson += "\"Phone\"";
+                            myJson += "\"phone\"";
                             break;
                         case ProductType.Tablet:
-                            myJson += "\"Tablet\"";
+                            myJson += "\"tablet\"";
                             break;
 
                     }
@@ -311,7 +314,124 @@ namespace EmployeeWebApliccatin
                 Response.End();
 
             }
+            //q=2 -->get Home Page
+            else if (Request.Params["q"] != null && Request.Params["q"] == "6")
+            {
 
+                ProductType? PType = null;
+                //do stuff
+                if (Request.Params["TP"] != "null")
+                    PType = (ProductType)Convert.ToByte(Request.Params["TP"]);
+                //get Carousel items
+                List<Phone> phList = Phone.GetPhonesListByType(PType);
+                //get top devices counts
+                List<Phone> DevicesCnt = Phone.GetDevicesCount();
+                string myJson = "{\"Devs\":{\"accessories\": 0 ,";
+                int j = 1;
+                foreach (Phone Dev in DevicesCnt)
+                {
+
+                    switch (Dev.PrType)
+                    {
+                        case ProductType.Phone:
+                            myJson += "\"phone\":";
+                            break;
+                        case ProductType.Tablet:
+                            myJson += "\"tablet\":";
+                            break;
+
+                    }
+                    myJson +=  " \"" + Convert.ToInt32(Dev.MyCount) + "\"";
+
+                    if (j == DevicesCnt.Count())
+                        myJson += "";
+                    else
+                    {
+                        myJson += ",";
+                        j++;
+                    }
+                }
+                myJson += "},";
+                myJson += "\"DataArr\":[";
+                int i = 1;
+                foreach (Phone myPh in phList)
+                {
+                    myJson += "{\"Id\":" + myPh.Id.ToString() + ",\"Name\":" + "\"" + myPh.Name.ToString() + "\"" + ",\"Price\":" + "\"" + myPh.Price.ToString() + "\"" + ",\"DPrice\":" + "\"" + myPh.DiscountPrice.ToString() + "\"" + ",\"Brand\":";
+                    #region Brand Name SC
+                    switch (myPh.Brand)
+                    {
+                        case Brands.Apple:
+
+                            myJson += "\"Apple\"";
+                            break;
+                        case Brands.Microsoft:
+                            myJson += "\"Microsoft\"";
+                            break;
+                        case Brands.Samsung:
+                            myJson += "\"Samsung\"";
+                            break;
+                        case Brands.Sony:
+                            myJson += "\"Sony\"";
+                            break;
+                        case Brands.HTC:
+                            myJson += "\"HTC\"";
+                            break;
+                    }
+                    #endregion
+
+                    myJson += ",\"PublishDate\":" + (myPh.PublishDate == null ? "null" : "\"" + myPh.PublishDate.ToString() + "\"");
+                    myJson += ",\"ImgUrl\":" + (myPh.ImgURL == null ? "null" : "\"" + myPh.ImgURL.ToString() + "\"");
+                    myJson += ",\"PrType\":";
+                    #region Product Type SC
+                    switch (myPh.PrType)
+                    {
+                        case ProductType.Phone:
+                            myJson += "\"phone\"";
+                            break;
+                        case ProductType.Tablet:
+                            myJson += "\"tablet\"";
+                            break;
+
+                    }
+                    #endregion
+
+                    myJson += ",\"Available\":" + "\"" + myPh.Available + "\"";
+                    myJson += ",\"Sale\":" + "\"" + myPh.Sale + "\"";
+                    myJson += ",\"Summery\":" + "\"" + myPh.Summery.ToString() + "\"";
+                    myJson += ",\"OS\":";
+                    #region Operating Sysyem
+                    switch (myPh.OS)
+                    {
+                        case OsType.Android:
+                            myJson += "\"Android\"";
+                            break;
+                        case OsType.IOS:
+                            myJson += "\"IOS\"";
+                            break;
+
+                    }
+                    #endregion
+                    if (i == phList.Count())
+                        myJson += "}";
+                    else
+                    {
+                        myJson += "},";
+                        i++;
+                    }
+
+                }
+                myJson += "]";
+                myJson += ",\"topSl\": [{\"t\":\"Save $144!\", \"d\":\"See how to save $144 on the Samsung Galaxy A6 when you add a line.\"},{\"t\":\"More Than Your Expect!\", \"d\":\"FREE TWO-DAY Shipping on Phones and Devices With All New Activations. USE PROMO CODE: 2DAY\"}, {\"t\":\"Check Out top-selling Accessories!\", \"d\":\"Buy over $20 of accessories, get FREE SHIPPING at checkout.\"}]";
+                myJson += "}";
+               var javaScriptSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+                string myPhoneList = javaScriptSerializer.Serialize(myJson);
+
+                Response.Clear();
+                Response.ContentType = "application/json";
+                Response.Write(myJson);
+                Response.End();
+
+            }
         }
 
     }
